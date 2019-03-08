@@ -1,48 +1,44 @@
 package com.codegen.dataModels;
 
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Contract {
 
+
 	@Id
-	private String contractId;
-	private String hotelId;
-	private String maxAdults;
-	private String noOfRooms;
-	private String price;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "contractId")
+	private int contractId;
 	private String contractStartDate;
 	private String contractEndDate;
 
-	public Contract( String contractId, String hotelId, String maxAdults, String noOfRooms, String price,
-			String contractStartDate, String contractEndDate )
-	{
-		this.contractId = contractId;
-		this.hotelId = hotelId;
-		this.maxAdults = maxAdults;
-		this.noOfRooms = noOfRooms;
-		this.price = price;
-		this.contractStartDate = contractStartDate;
-		this.contractEndDate = contractEndDate;
+	@OneToMany (mappedBy = "contracts",cascade = CascadeType.ALL)
+	private List<roomType> roomTypes = new ArrayList<roomType>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "hotelid", referencedColumnName = "hotelId")
+	private Hotel hotel;
+
+	public Contract(){}
+
+
+	public void setRoomTypes( List<roomType> roomTypes ) {
+		roomTypes.forEach( x->x.setContracts( this ) );
+		this.roomTypes = roomTypes;
+
+	}
+	@JsonManagedReference
+	public List<roomType> getRoomTypes() {
+		return roomTypes;
 	}
 
-	public String getContractId() {
+	public int getContractId() {
 		return contractId;
-	}
-
-	public String getHotelId() {
-		return hotelId;
-	}
-
-	public String getMaxAdults() {
-		return maxAdults;
-	}
-
-	public String getNoOfRooms() {
-		return noOfRooms;
-	}
-
-	public String getPrice() {
-		return price;
 	}
 
 	public String getContractStartDate() {
@@ -53,24 +49,8 @@ public class Contract {
 		return contractEndDate;
 	}
 
-	public void setContractId( String contractId ) {
+	public void setContractId( int contractId ) {
 		this.contractId = contractId;
-	}
-
-	public void setHotelId( String hotelId ) {
-		this.hotelId = hotelId;
-	}
-
-	public void setMaxAdults( String maxAdults ) {
-		this.maxAdults = maxAdults;
-	}
-
-	public void setNoOfRooms( String noOfRooms ) {
-		this.noOfRooms = noOfRooms;
-	}
-
-	public void setPrice( String price ) {
-		this.price = price;
 	}
 
 	public void setContractStartDate( String contractStartDate ) {
@@ -80,4 +60,12 @@ public class Contract {
 	public void setContractEndDate( String contractEndDate ) {
 		this.contractEndDate = contractEndDate;
 	}
+	public void setHotel( Hotel hotel ) {
+		this.hotel = hotel;
+	}
+
+	public Hotel getHotel() {
+		return hotel;
+	}
+
 }

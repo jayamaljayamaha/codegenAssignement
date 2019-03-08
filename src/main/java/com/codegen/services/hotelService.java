@@ -25,7 +25,7 @@ public class hotelService {
 		hotelrepositary.save(hotel);
 	}
 
-	public Optional<Hotel> getHotel(String id){
+	public Optional<Hotel> getHotel(int id){
 		return hotelrepositary.findById(id);
 	}
 
@@ -33,7 +33,7 @@ public class hotelService {
 		hotelrepositary.save(hotel);
 	}
 
-	public void deleteHotel(String id){
+	public void deleteHotel(int id){
 		hotelrepositary.deleteById(id);
 	}
 

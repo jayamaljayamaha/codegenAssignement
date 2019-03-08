@@ -1,32 +1,74 @@
 package com.codegen.dataModels;
 
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
 public class roomType {
 
 	@Id
-	private String roomTypeId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "roomTypeId")
+	private int roomTypeId;
 	private String roomType;
+	private String price;
+	private String noOfRooms;
+	private String maxAddults;
 
-	public roomType( String hotelId, String name ) {
-		this.roomTypeId = hotelId;
-		this.roomType = name;
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "contractId")
+	private Contract contracts;
+
+	public roomType(){}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public String getNoOfRooms() {
+		return noOfRooms;
+	}
+
+	public String getMaxAddults() {
+		return maxAddults;
 	}
 
 	public String getRoomType() {
 		return roomType;
 	}
 
-	public String getRoomTypeId() {
+	public int getRoomTypeId() {
 		return roomTypeId;
 	}
 
-	public void setRoomTypeId( String hotelId ) {
+	public void setRoomTypeId( int hotelId ) {
 		this.roomTypeId = hotelId;
 	}
 
 	public void setRoomType( String name ) {
 		this.roomType = name;
+	}
+
+	public void setPrice( String price ) {
+		this.price = price;
+	}
+
+	public void setNoOfRooms( String noOfRooms ) {
+		this.noOfRooms = noOfRooms;
+	}
+
+	public void setMaxAddults( String maxAddults ) {
+		this.maxAddults = maxAddults;
+	}
+	public Contract getContracts() {
+		return contracts;
+	}
+
+	public void setContracts( Contract contracts ) {
+		this.contracts = contracts;
 	}
 
 }
